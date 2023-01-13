@@ -23,7 +23,7 @@ namespace TestVisioAddIn
         private void replace_Click(object sender, EventArgs e)
         {
             var replaceCounter = FindAndReplace();
-            System.Windows.Forms.MessageBox.Show($"Replaced {replaceCounter} occurence(s)");
+            MessageBox.Show($"Replaced {replaceCounter} occurence(s)");
         }
 
         private void FindTextBox_TextChanged(object sender, EventArgs e)
