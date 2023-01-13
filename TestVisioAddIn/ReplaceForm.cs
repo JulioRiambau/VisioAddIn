@@ -72,7 +72,7 @@ namespace TestVisioAddIn
                         {
                             replaceCounter++;
                             formulas.Add(cell.Formula);
-                            cell.FormulaU = $"\"\"\"{value.Replace(find, replace)}\"\"\"";
+                            cell.FormulaU = "\"" + value.Replace(find, replace) + "\"";
                         }
 
                         row++;
