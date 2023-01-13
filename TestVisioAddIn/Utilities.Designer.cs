@@ -35,56 +35,30 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.SayHello = this.Factory.CreateRibbonButton();
+            this.TextAdjust = this.Factory.CreateRibbonGroup();
             this.buttonReplace = this.Factory.CreateRibbonButton();
-            this.Find = this.Factory.CreateRibbonEditBox();
-            this.Replace = this.Factory.CreateRibbonEditBox();
             this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
+            this.TextAdjust.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.TextAdjust);
             this.tab1.Label = "TabAddIns";
             this.tab1.Name = "tab1";
             // 
-            // group1
+            // TextAdjust
             // 
-            this.group1.Items.Add(this.SayHello);
-            this.group1.Items.Add(this.buttonReplace);
-            this.group1.Items.Add(this.Find);
-            this.group1.Items.Add(this.Replace);
-            this.group1.Label = "group1";
-            this.group1.Name = "group1";
-            // 
-            // SayHello
-            // 
-            this.SayHello.Label = "Hello!";
-            this.SayHello.Name = "SayHello";
-            this.SayHello.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SayHello_Click);
+            this.TextAdjust.Items.Add(this.buttonReplace);
+            this.TextAdjust.Label = "Text Adjust";
+            this.TextAdjust.Name = "TextAdjust";
             // 
             // buttonReplace
             // 
             this.buttonReplace.Label = "Replace";
             this.buttonReplace.Name = "buttonReplace";
             this.buttonReplace.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonReplace_Click);
-            // 
-            // Find
-            // 
-            this.Find.Label = "Find";
-            this.Find.Name = "Find";
-            this.Find.Text = null;
-            this.Find.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Find_TextChanged);
-            // 
-            // Replace
-            // 
-            this.Replace.Label = "Replace";
-            this.Replace.Name = "Replace";
-            this.Replace.Text = null;
-            this.Replace.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Replace_TextChanged);
             // 
             // Utilities
             // 
@@ -94,8 +68,8 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Utilities_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
+            this.TextAdjust.ResumeLayout(false);
+            this.TextAdjust.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -103,11 +77,8 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton SayHello;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup TextAdjust;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonReplace;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox Find;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox Replace;
     }
 
     partial class ThisRibbonCollection
