@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Visio;
 
 namespace TestVisioAddIn
 {
@@ -9,6 +10,8 @@ namespace TestVisioAddIn
         private string find;
 
         private string replace;
+
+        private int replaceCounter;
 
         public ReplaceText()
         {
@@ -22,7 +25,7 @@ namespace TestVisioAddIn
 
         private void replace_Click(object sender, EventArgs e)
         {
-            var replaceCounter = FindAndReplace();
+            FindAndReplace();
             MessageBox.Show($"Replaced {replaceCounter} occurence(s)");
         }
 
@@ -36,51 +39,58 @@ namespace TestVisioAddIn
             replace = ReplaceTextBox.Text;
         }
 
-        private int FindAndReplace()
+        private void FindAndReplace()
         {
             var pages = Globals.ThisAddIn.Application.ActiveDocument.Pages;
-            var formulas = new List<string>();
-            var replaceCounter = 0;
+            
+            replaceCounter = 0;
 
             foreach (Microsoft.Office.Interop.Visio.Page page in pages)
             {
                 foreach (Microsoft.Office.Interop.Visio.Shape shape in page.Shapes)
                 {
-                    short row = 0;
-
-                    if (shape.Text.Contains(find))
-                    {
-                        replaceCounter++;
-                        shape.Text = shape.Text.Replace(find, replace);
-                    }
-
-                    while (shape.get_CellsSRCExists(
-                                                    (short)Microsoft.Office.Interop.Visio.VisSectionIndices.visSectionProp,
-                                                    row,
-                                                    (short)Microsoft.Office.Interop.Visio.VisCellIndices.visCustPropsValue,
-                                                    (short)0) != 0)
-                    {
-                        var cell = shape.get_CellsSRC(
-                                                      (short)Microsoft.Office.Interop.Visio.VisSectionIndices.visSectionProp,
-                                                      row,
-                                                      (short)Microsoft.Office.Interop.Visio.VisCellIndices.visCustPropsValue
-                                                     );
-
-                        string value = cell.get_ResultStr(Microsoft.Office.Interop.Visio.VisUnitCodes.visNoCast);
-
-                        if (value.Contains(find))
-                        {
-                            replaceCounter++;
-                            formulas.Add(cell.Formula);
-                            cell.FormulaU = "\"" + value.Replace(find, replace) + "\"";
-                        }
-
-                        row++;
-                    }
+                    ProcessShape(shape);
                 }
             }
+        }
 
-            return replaceCounter;
+        private void ProcessShape(Shape shape)
+        {
+            short row = 0;
+
+            if (shape.Text.Contains(find))
+            {
+                replaceCounter++;
+                shape.Text = shape.Text.Replace(find, replace);
+            }
+
+            while (shape.get_CellsSRCExists(
+                                            (short)Microsoft.Office.Interop.Visio.VisSectionIndices.visSectionProp,
+                                            row,
+                                            (short)Microsoft.Office.Interop.Visio.VisCellIndices.visCustPropsValue,
+                                            (short)0) != 0)
+            {
+                var cell = shape.get_CellsSRC(
+                                              (short)Microsoft.Office.Interop.Visio.VisSectionIndices.visSectionProp,
+                                              row,
+                                              (short)Microsoft.Office.Interop.Visio.VisCellIndices.visCustPropsValue
+                                             );
+
+                string value = cell.get_ResultStr(Microsoft.Office.Interop.Visio.VisUnitCodes.visNoCast);
+
+                if (value.Contains(find))
+                {
+                    replaceCounter++;
+                    cell.FormulaU = "\"" + value.Replace(find, replace) + "\"";
+                }
+
+                row++;
+            }
+
+            foreach (Shape subShape in shape.Shapes)
+            {
+                ProcessShape(subShape);
+            }
         }
     }
 }
